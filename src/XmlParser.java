@@ -1,4 +1,3 @@
-import javax.xml.stream.XMLEventFactory;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -6,7 +5,6 @@ import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,10 +23,9 @@ public class XmlParser {
     static final String DESCRIPTION = "Description";
     static final String VALCURS = "ValCurs";
 
-    public List<Currency> readCurrencies(String currencyURL)
-    {
+    public List<Currency> readCurrencies(String currencyURL) {
         List<Currency> currencies = new ArrayList<Currency>();
-        try{
+        try {
             XMLInputFactory inputFactory = XMLInputFactory.newInstance();
             InputStream inputStream = new URL(currencyURL).openStream();
             XMLEventReader eventReader = inputFactory.createXMLEventReader(inputStream);
@@ -36,18 +33,17 @@ public class XmlParser {
             Currency currency = null;
             String description = null;
 
-            while(eventReader.hasNext()){
+            while (eventReader.hasNext()) {
                 XMLEvent event = eventReader.nextEvent();
 
-                if(event.isStartElement()) {
+                if (event.isStartElement()) {
                     StartElement startElement = event.asStartElement();
                     String elementName = startElement.getName().getLocalPart();
 
                     switch (elementName) {
                         case VALCURS:
                             Iterator<Attribute> att = startElement.getAttributes();
-                            while(att.hasNext())
-                            {
+                            while (att.hasNext()) {
                                 Attribute attribute = att.next();
                                 if (attribute.getName().toString().equals(DESCRIPTION)) {
                                     description = attribute.getValue();
@@ -78,13 +74,13 @@ public class XmlParser {
                             break;
                     }
                 }
-                    if (event.isEndElement()) {
-                        EndElement endElement = event.asEndElement();
-                        if(endElement.getName().getLocalPart().equals(VALUTE)){
-                            currencies.add(currency);
+                if (event.isEndElement()) {
+                    EndElement endElement = event.asEndElement();
+                    if (endElement.getName().getLocalPart().equals(VALUTE)) {
+                        currencies.add(currency);
 
-                        }
                     }
+                }
 
             }
         } catch (FileNotFoundException | XMLStreamException e) {
