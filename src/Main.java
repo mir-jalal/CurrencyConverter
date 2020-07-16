@@ -48,7 +48,7 @@ public class Main extends javax.swing.JFrame {
     private void initComponents() {
 
         parser = new XmlParser();
-        currencies = parser.readCurrencies("https://www.cbar.az/currencies/17.07.2020.xml");
+        currencies = parser.readCurrencies("https://www.cbar.az/currencies/17.07.2021.xml");
 
         String[] columns = new String[]{"Valyuta", "Kod", "Kurs"};
         String[][] data = new String[currencies.size()][];
